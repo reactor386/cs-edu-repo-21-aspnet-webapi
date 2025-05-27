@@ -33,9 +33,29 @@ public class RoomsController : ControllerBase
         _repository = repository;
         _mapper = mapper;
     }
-    
+
+
     //TODO: Задание - добавить метод на получение всех существующих комнат
-    
+
+    /// <summary>
+    /// Просмотр списка комнат
+    /// </summary>
+    [HttpGet]
+    [Route("")]
+    public async Task<IActionResult> GetDevices()
+    {
+        var rooms = await _repository.GetRooms();
+
+        var resp = new GetRoomsResponse
+        {
+            RoomAmount = rooms.Length,
+            Rooms = _mapper.Map<Room[], RoomView[]>(rooms)
+        };
+        
+        return StatusCode(200, resp);
+    }
+
+
     /// <summary>
     /// Добавление комнаты
     /// </summary>

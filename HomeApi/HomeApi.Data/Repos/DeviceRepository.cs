@@ -101,12 +101,14 @@ public class DeviceRepository : IDeviceRepository
     /// </summary>
     public async Task DeleteDevice(Device device)
     {
-        // _context.Devices.Remove(device);
+        _context.Devices.Remove(device);
 
+        /*
        // Удаление мз базы
-       var entry = _context.Entry(device);
+        var entry = _context.Entry(device);
        if (entry.State == EntityState.Detached)
            _context.Devices.Remove(device);
+        */
 
         // Сохранение изменений
         await _context.SaveChangesAsync();

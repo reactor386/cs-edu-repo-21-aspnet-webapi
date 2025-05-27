@@ -68,12 +68,36 @@ public class DevicesController : ControllerBase
 
 
     // TODO: Задание: напишите запрос на удаление устройства
-    
+
+    /// <summary>
+    /// Удаление устройства
+    /// </summary>
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        Device device;
+        device = await _devices.GetDeviceById(id);
+        if (device != null)
+            await _devices.DeleteDevice(device);
+
+        device = await _devices.GetDeviceById(id);
+        if (device == null)
+        {
+            return StatusCode(204);
+        }
+        else
+        {
+            return StatusCode(500, $"Ошибка удаления устройства {id}");
+        }
+    }
+
+
     /// <summary>
     /// Добавление нового устройства
     /// </summary>
-    [HttpPost] 
-    [Route("")] 
+    [HttpPost]
+    [Route("")]
     public async Task<IActionResult> Add( AddDeviceRequest request )
     {
         var room = await _rooms.GetRoomByName(request.RoomLocation);
@@ -94,8 +118,8 @@ public class DevicesController : ControllerBase
     /// <summary>
     /// Обновление существующего устройства
     /// </summary>
-    [HttpPatch] 
-    [Route("{id}")] 
+    [HttpPatch]
+    [Route("{id}")]
     public async Task<IActionResult> Edit(
         [FromRoute] Guid id,
         [FromBody]  EditDeviceRequest request)

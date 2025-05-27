@@ -23,6 +23,15 @@ public class RoomRepository : IRoomRepository
     }
     
     /// <summary>
+    /// Выгрузить все комнаты
+    /// </summary>
+    public async Task<Room[]> GetRooms()
+    {
+        return await _context.Rooms
+            .ToArrayAsync();
+    }
+
+    /// <summary>
     ///  Найти комнату по имени
     /// </summary>
     public async Task<Room> GetRoomByName(string name)
