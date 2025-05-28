@@ -18,7 +18,7 @@ public class AddDeviceRequestValidator : AbstractValidator<AddDeviceRequest>
     /// <summary>
     /// Метод, конструктор, устанавливающий правила
     /// </summary>
-    public AddDeviceRequestValidator() 
+    public AddDeviceRequestValidator()
     {
         /* Зададим правила валидации */ 
         RuleFor(x => x.Name).NotEmpty(); // Проверим на null и на пустое свойство

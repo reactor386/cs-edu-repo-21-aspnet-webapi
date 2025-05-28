@@ -18,7 +18,7 @@ public class EditDeviceRequestValidator : AbstractValidator<EditDeviceRequest>
     /// <summary>
     /// Метод - конструктор, устанавливающий правила
     /// </summary>
-    public EditDeviceRequestValidator() 
+    public EditDeviceRequestValidator()
     {
         RuleFor(x => x.NewName).NotEmpty(); 
         RuleFor(x => x.NewRoom).NotEmpty().Must(BeSupported)

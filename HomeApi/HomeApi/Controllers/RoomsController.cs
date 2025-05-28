@@ -13,6 +13,7 @@ using AutoMapper;
 
 using HomeApi.Contracts.Models.Rooms;
 using HomeApi.Data.Models;
+using HomeApi.Data.Queries;
 using HomeApi.Data.Repos;
 
 
@@ -27,7 +28,7 @@ public class RoomsController : ControllerBase
 {
     private IRoomRepository _repository;
     private IMapper _mapper;
-    
+
     public RoomsController(IRoomRepository repository, IMapper mapper)
     {
         _repository = repository;
@@ -42,7 +43,7 @@ public class RoomsController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> GetDevices()
+    public async Task<IActionResult> GetRooms()
     {
         var rooms = await _repository.GetRooms();
 
@@ -51,7 +52,7 @@ public class RoomsController : ControllerBase
             RoomAmount = rooms.Length,
             Rooms = _mapper.Map<Room[], RoomView[]>(rooms)
         };
-        
+
         return StatusCode(200, resp);
     }
 
@@ -59,8 +60,8 @@ public class RoomsController : ControllerBase
     /// <summary>
     /// Добавление комнаты
     /// </summary>
-    [HttpPost] 
-    [Route("")] 
+    [HttpPost]
+    [Route("")]
     public async Task<IActionResult> Add([FromBody] AddRoomRequest request)
     {
         var existingRoom = await _repository.GetRoomByName(request.Name);
@@ -70,7 +71,30 @@ public class RoomsController : ControllerBase
             await _repository.AddRoom(newRoom);
             return StatusCode(201, $"Комната {request.Name} добавлена!");
         }
-        
+
         return StatusCode(409, $"Ошибка: Комната {request.Name} уже существует.");
+    }
+
+
+    /// <summary>
+    /// Обновление существующей комнаты
+    /// </summary>
+    [HttpPatch]
+    [Route("{id}")]
+    public async Task<IActionResult> Edit(
+        [FromRoute] Guid id,
+        [FromBody]  EditRoomRequest request)
+    {
+        var room = await _repository.GetRoomById(id);
+        if(room == null)
+            return StatusCode(400, $"Ошибка: Комната с идентификатором {id} не существует.");
+
+        await _repository.UpdateRoom(
+            room,
+            new UpdateRoomQuery(request.NewName, request.NewArea,
+                request.NewGasConnected, request.NewVoltage)
+        );
+
+        return StatusCode(200, $"Данные комнтаты обновлены Имя - {room.Name}.");
     }
 }

@@ -1,6 +1,7 @@
 ﻿//-
 using System;
 
+
 namespace HomeApi.Contracts.Models.Devices;
 
 /// <summary>

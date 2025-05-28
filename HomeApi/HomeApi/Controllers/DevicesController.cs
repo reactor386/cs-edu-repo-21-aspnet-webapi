@@ -84,7 +84,7 @@ public class DevicesController : ControllerBase
         device = await _devices.GetDeviceById(id);
         if (device == null)
         {
-            return StatusCode(204);
+            return StatusCode(204);  // No Content
         }
         else
         {
@@ -98,7 +98,7 @@ public class DevicesController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> Add( AddDeviceRequest request )
+    public async Task<IActionResult> Add(AddDeviceRequest request)
     {
         var room = await _rooms.GetRoomByName(request.RoomLocation);
         if(room == null)
