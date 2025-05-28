@@ -79,7 +79,8 @@ public class RoomsController : ControllerBase
     /// <summary>
     /// Обновление существующей комнаты
     /// </summary>
-    [HttpPatch]
+    // [HttpPatch]
+    [HttpPut]
     [Route("{id}")]
     public async Task<IActionResult> Edit(
         [FromRoute] Guid id,
